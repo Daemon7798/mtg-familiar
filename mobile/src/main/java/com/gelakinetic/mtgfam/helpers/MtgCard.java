@@ -19,7 +19,6 @@
 
 package com.gelakinetic.mtgfam.helpers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
@@ -38,6 +37,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Encapsulate all information about a magic card
@@ -149,7 +150,7 @@ public class MtgCard extends Card {
      * @param numberOf how many copies of the card are needed
      */
     public MtgCard(
-            Activity activity,
+            AppCompatActivity activity,
             String cardName,
             String cardSet,
             boolean isFoil,
@@ -457,7 +458,7 @@ public class MtgCard extends Card {
      * @param activity The activity for database access
      * @return An initialized MtgCard
      */
-    public static MtgCard fromTradeString(String line, Activity activity) {
+    public static MtgCard fromTradeString(String line, AppCompatActivity activity) {
 
         /* Parse these parts out of the string */
         String[] parts = line.split(DELIMITER);
@@ -544,7 +545,7 @@ public class MtgCard extends Card {
      * @param line     Information about this card, in the form of what toWishlistString() prints
      * @param activity A context used for getting localized strings
      */
-    public static MtgCard fromWishlistString(String line, boolean isSideboard, Activity activity) {
+    public static MtgCard fromWishlistString(String line, boolean isSideboard, AppCompatActivity activity) {
 
         String[] parts = line.split(MtgCard.DELIMITER);
 

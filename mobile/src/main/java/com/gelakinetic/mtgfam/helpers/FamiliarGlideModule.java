@@ -20,12 +20,13 @@
 package com.gelakinetic.mtgfam.helpers;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.module.AppGlideModule;
+
+import androidx.annotation.NonNull;
 
 @GlideModule
 public final class FamiliarGlideModule extends AppGlideModule {

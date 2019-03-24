@@ -18,6 +18,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -38,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/mjs_momir_portrait" />
+            app:srcCompat="@drawable/mjs_momir_portrait" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -89,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/mjs_stonehewer_portrait" />
+            app:srcCompat="@drawable/mjs_stonehewer_portrait" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -140,7 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/mjs_jhoira_portrait" />
+            app:srcCompat="@drawable/mjs_jhoira_portrait" />
 
         <LinearLayout
             android:layout_width="fill_parent"

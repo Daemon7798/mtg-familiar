@@ -19,14 +19,6 @@
 
 package com.gelakinetic.mtgfam.fragments;
 
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.MenuRes;
-import android.support.design.widget.Snackbar;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.InputType;
 import android.view.Menu;
@@ -49,8 +41,17 @@ import com.gelakinetic.mtgfam.helpers.SnackbarWrapper;
 import com.gelakinetic.mtgfam.helpers.WishlistHelpers;
 import com.gelakinetic.mtgfam.helpers.database.CardDbAdapter;
 import com.gelakinetic.mtgfam.helpers.tcgp.MarketPriceInfo;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.MenuRes;
+import androidx.appcompat.view.ActionMode;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * This class is for extension by any Fragment that has a custom list of cards at it's base that
@@ -350,7 +351,7 @@ public abstract class FamiliarListFragment extends FamiliarFragment {
                         ArrayList<DecklistHelpers.CompressedDecklistInfo> selectedItems =
                                 ((DecklistFragment.DecklistDataAdapter) getCardDataAdapter(0)).getSelectedItems();
                         for (DecklistHelpers.CompressedDecklistInfo info : selectedItems) {
-                            WishlistHelpers.addItemToWishlist(getActivity(),
+                            WishlistHelpers.addItemToWishlist(getFamiliarActivity(),
                                     info.convertToWishlist());
                         }
                         mode.finish();
@@ -553,7 +554,7 @@ public abstract class FamiliarListFragment extends FamiliarFragment {
      * Show an error snackbar when a file is saved with an empty name
      */
     public void showErrorSnackbarNoName() {
-        SnackbarWrapper.makeAndShowText(this.getActivity(),
+        SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(),
                 getString(R.string.judges_corner_error) + " " + getString(R.string.life_counter_edit_name_dialog_title),
                 SnackbarWrapper.LENGTH_LONG);
     }

@@ -37,11 +37,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.SpannableString;
@@ -104,6 +99,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
 /**
  * This class handles displaying card info.
  * WARNING! Because this fragment is nested in a CardViewPagerFragment, always get the parent
@@ -157,7 +158,7 @@ public class CardViewFragment extends FamiliarFragment {
     public LinkedHashSet<String> mPrintings;
     public LinkedHashSet<Long> mCardIds;
 
-    /* Easier than calling getActivity() all the time, and handles being nested */
+    /* Easier than calling getFamiliarActivity() all the time, and handles being nested */
     public FamiliarActivity mActivity;
 
     /* When requesting a permission, save what to do after the permission is granted */
@@ -623,7 +624,7 @@ public class CardViewFragment extends FamiliarFragment {
 
         // Check that there's memory to save the image to
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            SnackbarWrapper.makeAndShowText(getActivity(), R.string.card_view_no_external_storage, SnackbarWrapper.LENGTH_SHORT);
+            SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.card_view_no_external_storage, SnackbarWrapper.LENGTH_SHORT);
             return;
         }
 
@@ -644,7 +645,7 @@ public class CardViewFragment extends FamiliarFragment {
         try {
             imageFile = getSavedImageFile();
         } catch (Exception e) {
-            SnackbarWrapper.makeAndShowText(getActivity(), e.getMessage(), SnackbarWrapper.LENGTH_SHORT);
+            SnackbarWrapper.makeAndShowText(getFamiliarActivity(), e.getMessage(), SnackbarWrapper.LENGTH_SHORT);
             return;
         }
 
@@ -656,7 +657,7 @@ public class CardViewFragment extends FamiliarFragment {
             } else {
                 // Or display the path where it's saved
                 String strPath = imageFile.getAbsolutePath();
-                SnackbarWrapper.makeAndShowText(getActivity(), getString(R.string.card_view_image_saved) + strPath, SnackbarWrapper.LENGTH_LONG);
+                SnackbarWrapper.makeAndShowText(getFamiliarActivity(), getString(R.string.card_view_image_saved) + strPath, SnackbarWrapper.LENGTH_LONG);
             }
             return;
         }
@@ -678,7 +679,7 @@ public class CardViewFragment extends FamiliarFragment {
                         // Create the file
                         if (!imageFile.createNewFile()) {
                             // Couldn't create the file
-                            SnackbarWrapper.makeAndShowText(getActivity(), R.string.card_view_unable_to_create_file, SnackbarWrapper.LENGTH_SHORT);
+                            SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.card_view_unable_to_create_file, SnackbarWrapper.LENGTH_SHORT);
                             return;
                         }
 
@@ -690,12 +691,12 @@ public class CardViewFragment extends FamiliarFragment {
 
                         // Couldn't save the image for some reason
                         if (!bCompressed) {
-                            SnackbarWrapper.makeAndShowText(getActivity(), R.string.card_view_save_failure, SnackbarWrapper.LENGTH_SHORT);
+                            SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.card_view_save_failure, SnackbarWrapper.LENGTH_SHORT);
                             return;
                         }
                     } catch (IOException e) {
                         // Couldn't save it for some reason
-                        SnackbarWrapper.makeAndShowText(getActivity(), R.string.card_view_save_failure, SnackbarWrapper.LENGTH_SHORT);
+                        SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.card_view_save_failure, SnackbarWrapper.LENGTH_SHORT);
                         return;
                     }
 
@@ -710,7 +711,7 @@ public class CardViewFragment extends FamiliarFragment {
                     } else {
                         // Or display the path where it's saved
                         String strPath = imageFile.getAbsolutePath();
-                        SnackbarWrapper.makeAndShowText(getActivity(), getString(R.string.card_view_image_saved) + strPath, SnackbarWrapper.LENGTH_LONG);
+                        SnackbarWrapper.makeAndShowText(getFamiliarActivity(), getString(R.string.card_view_image_saved) + strPath, SnackbarWrapper.LENGTH_LONG);
                     }
                 }
             }
@@ -772,7 +773,7 @@ public class CardViewFragment extends FamiliarFragment {
                             // All lookups failed
                             if (onlyCheckCache) {
                                 // It's only checking the cache. This comes first
-                                if (FamiliarActivity.getNetworkState(getActivity(), true) == -1) {
+                                if (FamiliarActivity.getNetworkState(getFamiliarActivity(), true) == -1) {
                                     // Done checking the cache, and there's no network, return false
                                     return false;
                                 } else {
@@ -1093,7 +1094,7 @@ public class CardViewFragment extends FamiliarFragment {
                 return true;
             }
             case R.id.cardrulings: {
-                if (FamiliarActivity.getNetworkState(getActivity(), true) == -1) {
+                if (FamiliarActivity.getNetworkState(getFamiliarActivity(), true) == -1) {
                     return true;
                 }
 
@@ -1386,7 +1387,7 @@ public class CardViewFragment extends FamiliarFragment {
                     saveImageWithGlide(mSaveImageWhereTo);
                 } else {
                     /* Permission denied */
-                    SnackbarWrapper.makeAndShowText(getActivity(), R.string.card_view_unable_to_save_image,
+                    SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.card_view_unable_to_save_image,
                             SnackbarWrapper.LENGTH_LONG);
                 }
             }

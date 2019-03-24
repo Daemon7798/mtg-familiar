@@ -24,7 +24,6 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,6 +45,8 @@ import com.gelakinetic.mtgfam.helpers.database.FamiliarDbHandle;
 
 import java.util.Collections;
 import java.util.Random;
+
+import androidx.annotation.NonNull;
 
 /**
  * This fragment helps user play Momir Stonehewer Jhoira basic, a variant format usually found online. It contains

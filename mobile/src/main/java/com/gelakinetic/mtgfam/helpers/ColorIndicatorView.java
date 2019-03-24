@@ -23,12 +23,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.ArcShape;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.gelakinetic.mtgfam.R;
 
 import java.util.Arrays;
+
+import androidx.core.content.ContextCompat;
 
 public class ColorIndicatorView extends View {
     private static final String COLORS_CHARS[] = {"w", "u", "b", "r", "g"};

@@ -20,10 +20,11 @@
 package com.gelakinetic.mtgfam.helpers.util;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 
 import com.gelakinetic.mtgfam.FamiliarActivity;
 import com.gelakinetic.mtgfam.R;
+
+import androidx.fragment.app.Fragment;
 
 public class FragmentHelpers {
 

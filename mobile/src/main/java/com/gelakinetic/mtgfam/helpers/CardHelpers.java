@@ -20,7 +20,6 @@
 package com.gelakinetic.mtgfam.helpers;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
@@ -56,6 +55,8 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * This class has helpers for anything that utilizes card things, and has classes that
  * DecklistHelpers and WishlistHelpers override.
@@ -78,7 +79,7 @@ public class CardHelpers {
             boolean showCardButton,
             final boolean isSideboard) {
 
-        final Activity activity = fragment.getActivity();
+        final AppCompatActivity activity = fragment.getFamiliarActivity();
 
         /* Create the custom view */
         @SuppressLint("InflateParams") View customView = fragment.getActivity().getLayoutInflater()
@@ -275,7 +276,7 @@ public class CardHelpers {
                 /* Turn it back in to a plain ArrayList */
                 ArrayList<MtgCard> wishlist = new ArrayList<>(list);
                 /* Write the wishlist */
-                WishlistHelpers.WriteWishlist(fragment.getActivity(), wishlist);
+                WishlistHelpers.WriteWishlist(fragment.getFamiliarActivity(), wishlist);
                 /* notify the fragment of a change in the wishlist */
                 fragment.onWishlistChanged(mCardName); //
             } else {

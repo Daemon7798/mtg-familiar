@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.support.v4.content.ContextCompat;
 import android.text.Html.ImageGetter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +34,8 @@ import com.gelakinetic.mtgfam.R;
 import com.gelakinetic.mtgfam.helpers.database.CardDbAdapter;
 
 import org.jetbrains.annotations.NotNull;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * This list adapter is used to display a list of search results. It implements SectionIndexer to enable fast scrolling.

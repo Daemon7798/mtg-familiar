@@ -29,9 +29,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.annotation.NonNull;
 
 import com.gelakinetic.mtgfam.BuildConfig;
+
+import androidx.annotation.NonNull;
 
 /**
  * Provides access to the card database. Used for the search widget

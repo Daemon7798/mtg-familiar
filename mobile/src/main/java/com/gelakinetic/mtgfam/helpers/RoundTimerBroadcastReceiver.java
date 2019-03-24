@@ -33,14 +33,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 
 import com.gelakinetic.mtgfam.FamiliarActivity;
 import com.gelakinetic.mtgfam.R;
 import com.gelakinetic.mtgfam.fragments.RoundTimerFragment;
 
 import java.util.HashMap;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 /**
  * This class receives PendingIntents from the AlarmManager and acts upon them. If the device supports TTS, a service

@@ -22,13 +22,14 @@ package com.gelakinetic.mtgfam.helpers;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Html.ImageGetter;
 import android.text.Spanned;
 import android.text.SpannedString;
 
 import com.gelakinetic.mtgfam.R;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * This class replaces text with mana symbols and other glyphs. It does so using Html.fromHtml and custom-processing

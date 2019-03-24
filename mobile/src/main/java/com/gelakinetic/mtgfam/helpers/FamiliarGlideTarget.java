@@ -20,8 +20,6 @@
 package com.gelakinetic.mtgfam.helpers;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -29,6 +27,9 @@ import com.bumptech.glide.request.transition.Transition;
 import com.gelakinetic.mtgfam.R;
 import com.gelakinetic.mtgfam.fragments.CardViewFragment;
 import com.gelakinetic.mtgfam.fragments.dialogs.CardViewDialogFragment;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class FamiliarGlideTarget extends SimpleTarget<Drawable> {
 
@@ -112,7 +113,7 @@ public class FamiliarGlideTarget extends SimpleTarget<Drawable> {
     @Override
     public void onLoadFailed(@Nullable Drawable errorDrawable) {
         mFragment.getFamiliarActivity().clearLoading();
-        SnackbarWrapper.makeAndShowText(mFragment.getActivity(), R.string.card_view_image_not_found, SnackbarWrapper.LENGTH_SHORT);
+        SnackbarWrapper.makeAndShowText(mFragment.getFamiliarActivity(), R.string.card_view_image_not_found, SnackbarWrapper.LENGTH_SHORT);
         mFragment.showText();
     }
 }

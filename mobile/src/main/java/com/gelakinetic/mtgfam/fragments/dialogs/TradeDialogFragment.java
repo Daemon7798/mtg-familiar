@@ -26,7 +26,6 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -55,6 +54,8 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
+
+import androidx.annotation.Nullable;
 
 /**
  * Class that creates dialogs for TradeFragment
@@ -119,7 +120,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                     final boolean oldFoil = lSide.get(positionForDialog).mIsFoil;
 
                     /* Inflate the view and pull out UI elements */
-                    @SuppressLint("InflateParams") View view = LayoutInflater.from(getActivity()).inflate(R.layout.trader_card_click_dialog,
+                    @SuppressLint("InflateParams") View view = LayoutInflater.from(getFamiliarActivity()).inflate(R.layout.trader_card_click_dialog,
                             null, false);
                     assert view != null;
                     final CheckBox foilCheckbox = view.findViewById(R.id.traderDialogFoil);
@@ -139,7 +140,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                     /* Only show the foil checkbox if the card can be foil */
                     FamiliarDbHandle canBeFoilHandle = new FamiliarDbHandle();
                     try {
-                        SQLiteDatabase database = DatabaseManager.openDatabase(getActivity(), false, canBeFoilHandle);
+                        SQLiteDatabase database = DatabaseManager.openDatabase(getFamiliarActivity(), false, canBeFoilHandle);
                         if (CardDbAdapter.canBeFoil(lSide.get(positionForDialog).getExpansion(), database)) {
                             view.findViewById(R.id.checkbox_layout).setVisibility(View.VISIBLE);
                         } else {
@@ -149,7 +150,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                         /* Err on the side of foil */
                         foilCheckbox.setVisibility(View.VISIBLE);
                     } finally {
-                        DatabaseManager.closeDatabase(getActivity(), canBeFoilHandle);
+                        DatabaseManager.closeDatabase(getFamiliarActivity(), canBeFoilHandle);
                     }
 
                     /* when the user checks or un-checks the foil box, if the price isn't custom, set it */
@@ -259,7 +260,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                         Cursor cursor = null;
                         FamiliarDbHandle infoHandle = new FamiliarDbHandle();
                         try {
-                            SQLiteDatabase database = DatabaseManager.openDatabase(getActivity(), false, infoHandle);
+                            SQLiteDatabase database = DatabaseManager.openDatabase(getFamiliarActivity(), false, infoHandle);
 
                             synchronized (lSide) {
                                 /* Get the card ID, and send it to a new CardViewPagerFragment */
@@ -281,7 +282,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                             if (null != cursor) {
                                 cursor.close();
                             }
-                            DatabaseManager.closeDatabase(getActivity(), infoHandle);
+                            DatabaseManager.closeDatabase(getFamiliarActivity(), infoHandle);
                         }
                         getParentTradeFragment().removeDialog(getFragmentManager());
                     });
@@ -292,7 +293,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                         getParentTradeFragment().showDialog(DIALOG_CHANGE_SET, sideForDialog, positionForDialog);
                     });
 
-                    return new MaterialDialog.Builder(this.getActivity())
+                    return new MaterialDialog.Builder(this.getFamiliarActivity())
                             .title(lSide.get(positionForDialog).getName())
                             .customView(view, false)
                             .positiveText(R.string.dialog_done)
@@ -326,7 +327,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                     Cursor cards = null;
                     FamiliarDbHandle fetchCardHandle = new FamiliarDbHandle();
                     try {
-                        SQLiteDatabase database = DatabaseManager.openDatabase(getActivity(), false, fetchCardHandle);
+                        SQLiteDatabase database = DatabaseManager.openDatabase(getFamiliarActivity(), false, fetchCardHandle);
                         /* Query the database for all versions of this card */
                         cards = CardDbAdapter.fetchCardByName(data.getName(), Arrays.asList(
                                 CardDbAdapter.DATABASE_TABLE_CARDS + "." + CardDbAdapter.KEY_ID,
@@ -347,7 +348,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                         if (null != cards) {
                             cards.close();
                         }
-                        DatabaseManager.closeDatabase(getActivity(), fetchCardHandle);
+                        DatabaseManager.closeDatabase(getFamiliarActivity(), fetchCardHandle);
                     }
 
                     /* Turn set names and set codes into arrays */
@@ -355,7 +356,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                     final String[] aSetCodes = setCodes.toArray(new String[setCodes.size()]);
 
                     /* Build and return the dialog */
-                    return new MaterialDialog.Builder(getActivity())
+                    return new MaterialDialog.Builder(getFamiliarActivity())
                             .title(R.string.card_view_set_dialog_title)
                             .items((CharSequence[]) aSets)
                             .itemsCallback((dialog, itemView, position, text) -> {
@@ -376,18 +377,18 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                                     FamiliarDbHandle foilHandle = new FamiliarDbHandle();
                                     boolean isFoil = lSide.get(positionForDialog).mIsFoil;
                                     try {
-                                        SQLiteDatabase database = DatabaseManager.openDatabase(getActivity(), false, foilHandle);
+                                        SQLiteDatabase database = DatabaseManager.openDatabase(getFamiliarActivity(), false, foilHandle);
                                         if (!CardDbAdapter.canBeFoil(set, database)) {
                                             isFoil = false;
                                         }
                                     } catch (SQLiteException | FamiliarDbException e) {
                                         isFoil = false;
                                     } finally {
-                                        DatabaseManager.closeDatabase(getActivity(), foilHandle);
+                                        DatabaseManager.closeDatabase(getFamiliarActivity(), foilHandle);
                                     }
 
                                     try {
-                                        lSide.set(positionForDialog, new MtgCard(getActivity(), name, set, isFoil, numberOf));
+                                        lSide.set(positionForDialog, new MtgCard(getFamiliarActivity(), name, set, isFoil, numberOf));
 
                                         /* Reload and notify the adapter */
                                         getParentTradeFragment().loadPrice(lSide.get(positionForDialog));
@@ -409,7 +410,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
             }
             case DIALOG_PRICE_SETTING: {
                 /* Build the dialog with some choices */
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .title(R.string.pref_trade_price_title)
                         .items(getResources().getStringArray(R.array.trade_option_entries))
                         .itemsCallbackSingleChoice(getParentTradeFragment().getPriceSetting().ordinal(), (dialog, itemView, which, text) -> {
@@ -449,13 +450,13 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
             }
             case DIALOG_NEW_TRADE: {
                 /* Inflate a view to type in the trade's name, and show it in an AlertDialog */
-                @SuppressLint("InflateParams") View textEntryView = getActivity().getLayoutInflater()
+                @SuppressLint("InflateParams") View textEntryView = getFamiliarActivity().getLayoutInflater()
                         .inflate(R.layout.alert_dialog_text_entry, null, false);
                 assert textEntryView != null;
                 final EditText nameInput = textEntryView.findViewById(R.id.text_entry);
                 textEntryView.findViewById(R.id.clear_button).setVisibility(View.GONE);
 
-                Dialog dialog = new MaterialDialog.Builder(getActivity())
+                Dialog dialog = new MaterialDialog.Builder(getFamiliarActivity())
                         .title(R.string.trader_new)
                         .customView(textEntryView, false)
                         .positiveText(R.string.dialog_ok)
@@ -489,7 +490,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
             }
             case DIALOG_SAVE_TRADE_AS: {
                 /* Inflate a view to type in the trade's name, and show it in an AlertDialog */
-                @SuppressLint("InflateParams") View textEntryView = getActivity().getLayoutInflater()
+                @SuppressLint("InflateParams") View textEntryView = getFamiliarActivity().getLayoutInflater()
                         .inflate(R.layout.alert_dialog_text_entry, null, false);
                 assert textEntryView != null;
                 final EditText nameInput = textEntryView.findViewById(R.id.text_entry);
@@ -497,7 +498,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                 /* Set the button to clear the text field */
                 textEntryView.findViewById(R.id.clear_button).setOnClickListener(view -> nameInput.setText(""));
 
-                Dialog dialog = new MaterialDialog.Builder(getActivity())
+                Dialog dialog = new MaterialDialog.Builder(getFamiliarActivity())
                         .title(R.string.trader_save_as)
                         .customView(textEntryView, false)
                         .positiveText(R.string.dialog_ok)
@@ -528,11 +529,11 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
 
                 /* If there are no files, don't show the dialog */
                 if (tradeNames.length == 0) {
-                    SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.trader_toast_no_trades, SnackbarWrapper.LENGTH_LONG);
+                    SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.trader_toast_no_trades, SnackbarWrapper.LENGTH_LONG);
                     return DontShowDialog();
                 }
 
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .title(R.string.trader_load)
                         .negativeText(R.string.dialog_cancel)
                         .items((CharSequence[]) tradeNames)
@@ -556,19 +557,19 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
 
                 /* If there are no files, don't show the dialog */
                 if (tradeNames.length == 0) {
-                    SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.trader_toast_no_trades, SnackbarWrapper.LENGTH_LONG);
+                    SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.trader_toast_no_trades, SnackbarWrapper.LENGTH_LONG);
                     return DontShowDialog();
                 }
 
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .title(R.string.trader_delete)
                         .negativeText(R.string.dialog_cancel)
                         .items((CharSequence[]) tradeNames)
                         .itemsCallback((dialog, itemView, position, text) -> {
-                            File toDelete = new File(getActivity().getFilesDir(), tradeNames[position] +
+                            File toDelete = new File(getFamiliarActivity().getFilesDir(), tradeNames[position] +
                                     TradeFragment.TRADE_EXTENSION);
                             if (!toDelete.delete()) {
-                                SnackbarWrapper.makeAndShowText(getActivity(), toDelete.getName() + " " +
+                                SnackbarWrapper.makeAndShowText(getFamiliarActivity(), toDelete.getName() + " " +
                                         getString(R.string.not_deleted), SnackbarWrapper.LENGTH_LONG);
                             } else if (getParentTradeFragment().mCurrentTrade.equals(tradeNames[position])) {
                                 getParentTradeFragment().clearTrade(false);
@@ -577,7 +578,7 @@ public class TradeDialogFragment extends FamiliarDialogFragment {
                         .build();
             }
             case DIALOG_CONFIRMATION: {
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .title(R.string.trader_clear_dialog_title)
                         .content(R.string.trader_clear_dialog_text)
                         .positiveText(R.string.dialog_ok)

@@ -29,9 +29,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -76,6 +73,10 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 /**
  * This fragment lets users configure search parameters, and then search for a card
@@ -336,7 +337,7 @@ public class SearchViewFragment extends FamiliarFragment {
             Cursor setCursor = null;
             FamiliarDbHandle handle = new FamiliarDbHandle();
             try {
-                SQLiteDatabase database = DatabaseManager.openDatabase(frag.getActivity(), false, handle);
+                SQLiteDatabase database = DatabaseManager.openDatabase(frag.getFamiliarActivity(), false, handle);
                 if (frag.mSetNames == null) {
                     /* Query the database for all sets and fill the arrays to populate the list of choices with */
                     setCursor = CardDbAdapter.fetchAllSets(database);
@@ -396,7 +397,7 @@ public class SearchViewFragment extends FamiliarFragment {
                 if (null != formatCursor) {
                     formatCursor.close();
                 }
-                DatabaseManager.closeDatabase(frag.getActivity(), handle);
+                DatabaseManager.closeDatabase(frag.getFamiliarActivity(), handle);
             }
 
             return frag;
@@ -414,7 +415,7 @@ public class SearchViewFragment extends FamiliarFragment {
         @Override
         protected void onPostExecute(SearchViewFragment frag) {
             super.onPostExecute(frag);
-            Activity activity = frag.getActivity();
+            Activity activity = frag.getFamiliarActivity();
             if (null == activity) {
                 return;
             }
@@ -422,14 +423,14 @@ public class SearchViewFragment extends FamiliarFragment {
                 /* set the autocomplete for supertypes */
                 if (null != frag.mSupertypes) {
                     ArrayAdapter<String> supertypeAdapter = new ArrayAdapter<>(
-                            frag.getActivity(), R.layout.list_item_1, frag.mSupertypes);
+                            frag.getFamiliarActivity(), R.layout.list_item_1, frag.mSupertypes);
                     frag.mSupertypeField.setAdapter(supertypeAdapter);
                 }
 
                 if (null != frag.mSubtypes) {
                     /* set the autocomplete for subtypes */
                     ArrayAdapter<String> subtypeAdapter = new ArrayAdapter<>(
-                            frag.getActivity(), R.layout.list_item_1, frag.mSubtypes);
+                            frag.getFamiliarActivity(), R.layout.list_item_1, frag.mSubtypes);
                     frag.mSubtypeField.setAdapter(subtypeAdapter);
                 }
 
@@ -439,7 +440,7 @@ public class SearchViewFragment extends FamiliarFragment {
                     frag.mSetField.setAdapter(setAdapter);
                     /* set the autocomplete for artists */
                     ArrayAdapter<String> artistAdapter = new ArrayAdapter<>(
-                            frag.getActivity(), R.layout.list_item_1, frag.mArtists);
+                            frag.getFamiliarActivity(), R.layout.list_item_1, frag.mArtists);
                     frag.mArtistField.setThreshold(1);
                     frag.mArtistField.setAdapter(artistAdapter);
                 }
@@ -447,7 +448,7 @@ public class SearchViewFragment extends FamiliarFragment {
                 if (null != frag.mWatermarks) {
                     /* set the autocomplete for watermarks */
                     ArrayAdapter<String> watermarkAdapter = new ArrayAdapter<>(
-                            frag.getActivity(), R.layout.list_item_1, frag.mWatermarks);
+                            frag.getFamiliarActivity(), R.layout.list_item_1, frag.mWatermarks);
                     frag.mWatermarkField.setThreshold(1);
                     frag.mWatermarkField.setAdapter(watermarkAdapter);
                 }
@@ -461,7 +462,7 @@ public class SearchViewFragment extends FamiliarFragment {
         final Map<String, String> symbolsByAutocomplete = new LinkedHashMap<>();
 
         SetAdapter(SearchViewFragment frag) {
-            super(frag.getActivity(), R.layout.list_item_1);
+            super(frag.getFamiliarActivity(), R.layout.list_item_1);
             for (int index = 0; index < frag.mSetSymbols.length; index++) {
                 String autocomplete = "[" + frag.mSetSymbols[index] + "] " + frag.mSetNames[index];
                 String set = frag.mSetSymbols[index];
@@ -541,7 +542,7 @@ public class SearchViewFragment extends FamiliarFragment {
             ResultListFragment rlFrag = new ResultListFragment();
             startNewFragment(rlFrag, args);
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
-            SnackbarWrapper.makeAndShowText(getActivity(), R.string.judges_corner_error, SnackbarWrapper.LENGTH_SHORT);
+            SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.judges_corner_error, SnackbarWrapper.LENGTH_SHORT);
         }
     }
 
@@ -858,13 +859,13 @@ public class SearchViewFragment extends FamiliarFragment {
      */
     private void persistOptions() {
         try {
-            FileOutputStream fileStream = this.getActivity()
+            FileOutputStream fileStream = this.getFamiliarActivity()
                     .openFileOutput(DEFAULT_CRITERIA_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fileStream);
             os.writeObject(parseForm());
             os.close();
         } catch (IOException | ArrayIndexOutOfBoundsException | NullPointerException e) {
-            SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.search_toast_cannot_save, SnackbarWrapper.LENGTH_LONG);
+            SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.search_toast_cannot_save, SnackbarWrapper.LENGTH_LONG);
         }
     }
 
@@ -873,14 +874,14 @@ public class SearchViewFragment extends FamiliarFragment {
      */
     private void fetchPersistedOptions() {
         try {
-            FileInputStream fileInputStream = this.getActivity().openFileInput(DEFAULT_CRITERIA_FILE);
+            FileInputStream fileInputStream = this.getFamiliarActivity().openFileInput(DEFAULT_CRITERIA_FILE);
             ObjectInputStream oInputStream = new ObjectInputStream(fileInputStream);
             SearchCriteria criteria = (SearchCriteria) oInputStream.readObject();
             oInputStream.close();
 
             setFieldsFromCriteria(criteria);
         } catch (IOException | ClassNotFoundException e) {
-            SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.search_toast_cannot_load, SnackbarWrapper.LENGTH_LONG);
+            SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.search_toast_cannot_load, SnackbarWrapper.LENGTH_LONG);
         }
     }
 

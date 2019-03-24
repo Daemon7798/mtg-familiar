@@ -30,7 +30,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.content.res.AppCompatResources;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -38,6 +37,8 @@ import com.gelakinetic.mtgfam.FamiliarActivity;
 import com.gelakinetic.mtgfam.R;
 
 import java.util.Set;
+
+import androidx.appcompat.content.res.AppCompatResources;
 
 /**
  * This class sets up the buttons for the home screen widget

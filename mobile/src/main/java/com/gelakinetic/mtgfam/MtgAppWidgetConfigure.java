@@ -19,7 +19,6 @@
 
 package com.gelakinetic.mtgfam;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -34,10 +33,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * This simple shows a dialog which configures the widget when it is placed.
  */
-public class MtgAppWidgetConfigure extends Activity {
+public class MtgAppWidgetConfigure extends AppCompatActivity {
 
     private String[] mLaunchers;
     private Integer[] mSelectedIndices;

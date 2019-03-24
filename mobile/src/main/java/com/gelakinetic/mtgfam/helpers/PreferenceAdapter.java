@@ -24,9 +24,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.RingtoneManager;
 import android.preference.PreferenceManager;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.v4.util.LongSparseArray;
 
 import com.gelakinetic.mtgfam.R;
 import com.gelakinetic.mtgfam.fragments.dialogs.SortOrderDialogFragment;
@@ -40,6 +37,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
+import androidx.collection.LongSparseArray;
 
 /**
  * Brief guide to adding new preferences to this app:

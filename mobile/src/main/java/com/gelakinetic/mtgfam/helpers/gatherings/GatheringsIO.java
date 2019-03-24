@@ -19,7 +19,6 @@
 
 package com.gelakinetic.mtgfam.helpers.gatherings;
 
-import android.app.Activity;
 import android.util.Xml;
 
 import com.gelakinetic.mtgfam.R;
@@ -45,6 +44,8 @@ import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * This class is full of static methods to do IO for gatherings. The filesDir is a parameter everywhere since it is
@@ -329,7 +330,7 @@ public class GatheringsIO {
      * @param filesDir The absolute path to the directory on the filesystem where files created with
      *                 openFileOutput(String, int) are stored.
      */
-    public static void DeleteGathering(String fileName, File filesDir, Activity activity) {
+    public static void DeleteGathering(String fileName, File filesDir, AppCompatActivity activity) {
         File path = new File(filesDir, FOLDER_PATH);
         File gatheringFile = new File(path, fileName);
         if (!gatheringFile.delete()) {
@@ -344,7 +345,7 @@ public class GatheringsIO {
      * @param filesDir The absolute path to the directory on the filesystem where files created with
      *                 openFileOutput(String, int) are stored.
      */
-    public static void DeleteGatheringByName(String _name, File filesDir, Activity activity) {
+    public static void DeleteGatheringByName(String _name, File filesDir, AppCompatActivity activity) {
         for (String fileName : getGatheringFileList(filesDir)) {
             if (_name.equals(ReadGatheringNameFromXML(fileName, filesDir))) {
                 DeleteGathering(fileName, filesDir, activity);

@@ -22,13 +22,14 @@ package com.gelakinetic.mtgfam.fragments.dialogs;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gelakinetic.mtgfam.R;
 import com.gelakinetic.mtgfam.fragments.SearchViewFragment;
 
 import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.Nullable;
 
 /**
  * Class that creates dialogs for SearchViewFragment

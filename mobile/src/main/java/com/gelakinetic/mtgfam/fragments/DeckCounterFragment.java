@@ -20,7 +20,6 @@
 package com.gelakinetic.mtgfam.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +32,8 @@ import android.widget.ViewSwitcher.ViewFactory;
 import com.gelakinetic.mtgfam.R;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
 
 /**
  * This class helps judges tally deck counts quickly

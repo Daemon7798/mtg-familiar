@@ -23,7 +23,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Handler;
-import android.support.v4.util.LongSparseArray;
 
 import com.gelakinetic.mtgfam.FamiliarActivity;
 import com.gelakinetic.mtgfam.R;
@@ -62,6 +61,7 @@ import java.util.concurrent.Future;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import androidx.collection.LongSparseArray;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;

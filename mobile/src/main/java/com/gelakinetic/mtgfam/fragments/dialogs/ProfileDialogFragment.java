@@ -23,7 +23,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,8 @@ import com.gelakinetic.mtgfam.helpers.PreferenceAdapter;
 import com.gelakinetic.mtgfam.helpers.SnackbarWrapper;
 
 import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.Nullable;
 
 /**
  * Class that creates dialogs for ProfileFragment
@@ -74,7 +75,7 @@ public class ProfileDialogFragment extends FamiliarDialogFragment {
 
         switch (DIALOG_DCI_NUMBER) {
             case DIALOG_DCI_NUMBER: {
-                @SuppressLint("InflateParams") View view = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                @SuppressLint("InflateParams") View view = ((LayoutInflater) getFamiliarActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                         .inflate(R.layout.alert_dialog_text_entry, null, false);
 
                 final EditText dciEditText = view.findViewById(R.id.text_entry);
@@ -86,14 +87,14 @@ public class ProfileDialogFragment extends FamiliarDialogFragment {
 
                 dciEditText.setText(strDCI);
 
-                return new MaterialDialog.Builder(getActivity())
+                return new MaterialDialog.Builder(getFamiliarActivity())
                         .title(R.string.profile_update_dci_dialog_title)
                         .positiveText(R.string.dialog_ok)
                         .onPositive((dialog, which) -> {
                             String strNumber = dciEditText.getText().toString();
 
                             if (strNumber.isEmpty()) {
-                                SnackbarWrapper.makeAndShowText(getActivity(),
+                                SnackbarWrapper.makeAndShowText(getFamiliarActivity(),
                                         R.string.profile_invalid_dci,
                                         SnackbarWrapper.LENGTH_SHORT);
 

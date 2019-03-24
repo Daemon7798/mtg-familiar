@@ -19,7 +19,6 @@
 
 package com.gelakinetic.mtgfam.helpers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Pair;
 
@@ -41,6 +40,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
@@ -57,7 +57,7 @@ public class WishlistHelpers {
      * @param activity  A context to open the file and pop toasts with
      * @param lWishlist The wishlist to write to the file
      */
-    public static void WriteWishlist(Activity activity, ArrayList<MtgCard> lWishlist) {
+    public static void WriteWishlist(AppCompatActivity activity, ArrayList<MtgCard> lWishlist) {
         try {
             FileOutputStream fos = activity.openFileOutput(WISHLIST_NAME, Context.MODE_PRIVATE);
 
@@ -77,7 +77,7 @@ public class WishlistHelpers {
      * @param activity            A context to open the file and pop toasts with
      * @param mCompressedWishlist The wishlist to write to the file
      */
-    public static void WriteCompressedWishlist(Activity activity, ArrayList<CompressedWishlistInfo> mCompressedWishlist) {
+    public static void WriteCompressedWishlist(AppCompatActivity activity, ArrayList<CompressedWishlistInfo> mCompressedWishlist) {
         if (null == activity) {
             // Context is null, don't try to write the wishlist
             return;
@@ -105,7 +105,7 @@ public class WishlistHelpers {
      * @param activity     activity that this is being called from
      * @param wishlistInfo the CompressedWishlistInfo to add to the wishlist
      */
-    public static void addItemToWishlist(final Activity activity, final CompressedWishlistInfo wishlistInfo) {
+    public static void addItemToWishlist(final AppCompatActivity activity, final CompressedWishlistInfo wishlistInfo) {
         try {
             final ArrayList<MtgCard> currentWishlist = ReadWishlist(activity, false);
             for (IndividualSetInfo isi : wishlistInfo.mInfo) {
@@ -145,7 +145,7 @@ public class WishlistHelpers {
      * @param loadFullData true to load all card data from the database, false to just read the file
      * @return The wishlist in ArrayList form
      */
-    public static ArrayList<MtgCard> ReadWishlist(Activity activity, boolean loadFullData) throws FamiliarDbException {
+    public static ArrayList<MtgCard> ReadWishlist(AppCompatActivity activity, boolean loadFullData) throws FamiliarDbException {
 
         ArrayList<MtgCard> lWishlist = new ArrayList<>();
         int orderAddedIdx = 0;

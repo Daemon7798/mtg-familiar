@@ -26,8 +26,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,6 +63,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * This fragment shows a deck, and allows you to add to and modify it.
@@ -290,7 +291,7 @@ public class DecklistFragment extends FamiliarListFragment {
         }
         PreferenceAdapter.setLastLoadedDecklist(getContext(), mCurrentDeck);
         synchronized (mCompressedDecklist) {
-            DecklistHelpers.WriteCompressedDecklist(this.getActivity(), mCompressedDecklist, getCurrentDeckName());
+            DecklistHelpers.WriteCompressedDecklist(this.getFamiliarActivity(), mCompressedDecklist, getCurrentDeckName());
         }
     }
 
@@ -322,7 +323,7 @@ public class DecklistFragment extends FamiliarListFragment {
         final String name = String.valueOf(getCardNameInput());
         final String numberOf = String.valueOf(getCardNumberInput());
         try {
-            final MtgCard card = new MtgCard(getActivity(), name, null,
+            final MtgCard card = new MtgCard(getFamiliarActivity(), name, null,
                     checkboxFoilIsChecked(), Integer.parseInt(numberOf));
 
             final CompressedDecklistInfo decklistInfo =
@@ -363,7 +364,7 @@ public class DecklistFragment extends FamiliarListFragment {
                 Collections.sort(mCompressedDecklist, mDecklistChain);
 
                 /* Save the decklist */
-                DecklistHelpers.WriteCompressedDecklist(getActivity(), mCompressedDecklist, getCurrentDeckName());
+                DecklistHelpers.WriteCompressedDecklist(getFamiliarActivity(), mCompressedDecklist, getCurrentDeckName());
             }
 
             /* Clean up for the next add */
@@ -459,7 +460,7 @@ public class DecklistFragment extends FamiliarListFragment {
 
                 /* Read the decklist */
                 final ArrayList<MtgCard> decklist =
-                        DecklistHelpers.ReadDecklist(getActivity(), lDeckName, true);
+                        DecklistHelpers.ReadDecklist(getFamiliarActivity(), lDeckName, true);
 
                 /* Clear the decklist, or just the card that changed */
                 clearCompressedInfo(changedCardName);
@@ -584,14 +585,14 @@ public class DecklistFragment extends FamiliarListFragment {
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.decklist_share_title);
                 synchronized (mCompressedDecklist) {
                     sendIntent.putExtra(Intent.EXTRA_TEXT, DecklistHelpers
-                            .getSharableDecklist(mCompressedDecklist, getActivity()));
+                            .getSharableDecklist(mCompressedDecklist, getFamiliarActivity()));
                 }
                 sendIntent.setType("text/plain");
                 try {
                     startActivity(Intent.createChooser(sendIntent,
                             getString(R.string.decklist_share)));
                 } catch (ActivityNotFoundException anfe) {
-                    SnackbarWrapper.makeAndShowText(getActivity(), R.string.error_no_email_client,
+                    SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.error_no_email_client,
                             SnackbarWrapper.LENGTH_LONG);
                 }
                 return true;
@@ -624,11 +625,11 @@ public class DecklistFragment extends FamiliarListFragment {
     public void saveCurrentDeck(boolean showSnackbar) {
         String currentDeckName = getCurrentDeckName();
         synchronized (mCompressedDecklist) {
-            DecklistHelpers.WriteCompressedDecklist(getActivity(), mCompressedDecklist,
+            DecklistHelpers.WriteCompressedDecklist(getFamiliarActivity(), mCompressedDecklist,
                     currentDeckName);
         }
         if (showSnackbar) {
-            SnackbarWrapper.makeAndShowText(getActivity(), getString(R.string.decklist_saved_toast,
+            SnackbarWrapper.makeAndShowText(getFamiliarActivity(), getString(R.string.decklist_saved_toast,
                     currentDeckName), SnackbarWrapper.LENGTH_SHORT);
         }
     }
@@ -655,7 +656,7 @@ public class DecklistFragment extends FamiliarListFragment {
         updateDeckCounts(true);
         synchronized (mCompressedDecklist) {
             DecklistHelpers.WriteCompressedDecklist(
-                    getActivity(),
+                    getFamiliarActivity(),
                     mCompressedDecklist,
                     getCurrentDeckName()
             );
@@ -929,7 +930,7 @@ public class DecklistFragment extends FamiliarListFragment {
         protected void onItemRemovedFinal() {
             // After the snackbar times out, write the decklist to the disk
             synchronized (mCompressedDecklist) {
-                DecklistHelpers.WriteCompressedDecklist(getActivity(), mCompressedDecklist, getCurrentDeckName());
+                DecklistHelpers.WriteCompressedDecklist(getFamiliarActivity(), mCompressedDecklist, getCurrentDeckName());
             }
         }
 
@@ -967,7 +968,7 @@ public class DecklistFragment extends FamiliarListFragment {
                 holder.itemView.findViewById(R.id.card_row).setVisibility(View.VISIBLE);
                 View separator = holder.itemView.findViewById(R.id.decklistSeparator);
                 separator.setVisibility(View.GONE);
-                Html.ImageGetter imageGetter = ImageGetterHelper.GlyphGetter(getActivity());
+                Html.ImageGetter imageGetter = ImageGetterHelper.GlyphGetter(getFamiliarActivity());
                 holder.setCardName(info.getName());
                 holder.mCardCost.setText(ImageGetterHelper
                         .formatStringWithGlyphs(info.getManaCost(), imageGetter));

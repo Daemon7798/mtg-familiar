@@ -26,7 +26,6 @@ import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -58,6 +57,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.annotation.Nullable;
 
 /**
  * Class that creates dialogs for CardViewFragment
@@ -293,7 +294,7 @@ public class CardViewDialogFragment extends FamiliarDialogFragment {
                                 // Read the decklist
                                 String deckFileName = deckNames[position] + DecklistFragment.DECK_EXTENSION;
                                 ArrayList<MtgCard> decklist =
-                                        DecklistHelpers.ReadDecklist(getActivity(), deckFileName, false);
+                                        DecklistHelpers.ReadDecklist(getFamiliarActivity(), deckFileName, false);
 
                                 // Look through the decklist for any existing matches
                                 boolean entryIncremented = false;
@@ -313,7 +314,7 @@ public class CardViewDialogFragment extends FamiliarDialogFragment {
                                 }
 
                                 // Write the decklist back
-                                DecklistHelpers.WriteDecklist(getActivity(), decklist, deckFileName);
+                                DecklistHelpers.WriteDecklist(getFamiliarActivity(), decklist, deckFileName);
                             } catch (FamiliarDbException e) {
                                 getParentCardViewFragment().handleFamiliarDbException(false);
                             }

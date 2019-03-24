@@ -22,8 +22,6 @@ package com.gelakinetic.mtgfam.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,6 +57,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 /**
  * This class manages trades between two users. Trades can be saved and loaded.
@@ -151,7 +152,7 @@ public class TradeFragment extends FamiliarListFragment {
         final int numberOf = Integer.parseInt(getCardNumberInput().toString());
         final boolean isFoil = checkboxFoilIsChecked();
         try {
-            final MtgCard card = new MtgCard(getActivity(), cardName, null, isFoil, numberOf);
+            final MtgCard card = new MtgCard(getFamiliarActivity(), cardName, null, isFoil, numberOf);
 
             card.setIndex(mOrderAddedIdx++);
 
@@ -246,7 +247,7 @@ public class TradeFragment extends FamiliarListFragment {
 
         try {
             /* MODE_PRIVATE will create the file (or replace a file of the same name) */
-            fos = this.getActivity().openFileOutput(tradeName, Context.MODE_PRIVATE);
+            fos = this.getFamiliarActivity().openFileOutput(tradeName, Context.MODE_PRIVATE);
 
             synchronized (mListLeft) {
                 for (MtgCard cd : mListLeft) {
@@ -261,10 +262,10 @@ public class TradeFragment extends FamiliarListFragment {
 
             fos.close();
         } catch (IOException e) {
-            SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.trader_toast_save_error,
+            SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.trader_toast_save_error,
                     SnackbarWrapper.LENGTH_LONG);
         } catch (IllegalArgumentException e) {
-            SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.trader_toast_invalid_chars,
+            SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.trader_toast_invalid_chars,
                     SnackbarWrapper.LENGTH_LONG);
         }
 
@@ -288,12 +289,12 @@ public class TradeFragment extends FamiliarListFragment {
 
                     /* Read each card, line by line, load prices along the way */
                     br = new BufferedReader(
-                            new InputStreamReader(this.getActivity().openFileInput(tradeName))
+                            new InputStreamReader(this.getFamiliarActivity().openFileInput(tradeName))
                     );
                     String line;
                     while ((line = br.readLine()) != null) {
                         try {
-                            MtgCard card = MtgCard.fromTradeString(line, getActivity());
+                            MtgCard card = MtgCard.fromTradeString(line, getFamiliarActivity());
                             card.setIndex(mOrderAddedIdx++);
 
                             if (card.mSide == LEFT) {
@@ -310,7 +311,7 @@ public class TradeFragment extends FamiliarListFragment {
         } catch (FileNotFoundException e) {
             /* Do nothing, the autosave doesn't exist */
         } catch (IOException | IllegalArgumentException e) {
-            SnackbarWrapper.makeAndShowText(this.getActivity(), e.getLocalizedMessage(),
+            SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), e.getLocalizedMessage(),
                     SnackbarWrapper.LENGTH_LONG);
         } finally {
             if (br != null) {
@@ -429,7 +430,7 @@ public class TradeFragment extends FamiliarListFragment {
         try {
             startActivity(Intent.createChooser(sendIntent, getString(R.string.trader_share)));
         } catch (android.content.ActivityNotFoundException ex) {
-            SnackbarWrapper.makeAndShowText(getActivity(), R.string.error_no_email_client,
+            SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.error_no_email_client,
                     SnackbarWrapper.LENGTH_SHORT);
         }
     }

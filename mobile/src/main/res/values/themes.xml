@@ -31,7 +31,7 @@
 
         <item name="colorCheckbox">@color/colorCheckbox_light</item>
 
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
 
         <item name="color_background">@color/background_light</item>
@@ -100,7 +100,7 @@
 
         <item name="colorCheckbox">@color/colorCheckbox_dark</item>
 
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
 
         <item name="color_background">@color/background_dark</item>

@@ -19,13 +19,14 @@
 
 package com.gelakinetic.mtgfam.helpers;
 
-import android.app.Activity;
 import android.content.res.Resources;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.gelakinetic.mtgfam.R;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Snackbar that cancels when new snackbar shows
@@ -53,7 +54,7 @@ public class SnackbarWrapper {
      * @param duration How long to display the message.  Either {@link #LENGTH_SHORT} or
      *                 {@link #LENGTH_LONG}
      */
-    public static void makeAndShowText(Activity activity, CharSequence text, int duration) {
+    public static void makeAndShowText(AppCompatActivity activity, CharSequence text, int duration) {
         makeAndShowText(activity, text, duration, 0, null, null);
     }
 
@@ -66,7 +67,7 @@ public class SnackbarWrapper {
      *                 {@link #LENGTH_LONG}
      * @throws Resources.NotFoundException if the resource can't be found.
      */
-    public static void makeAndShowText(Activity activity, @StringRes int resId, int duration)
+    public static void makeAndShowText(AppCompatActivity activity, @StringRes int resId, int duration)
             throws Resources.NotFoundException {
         if (activity != null) {
             makeAndShowText(activity, activity.getString(resId), duration);
@@ -84,7 +85,7 @@ public class SnackbarWrapper {
      * @param actionListener    callback to be invoked when the action is clicked
      * @param callback          Callback to notify when transient bottom bar events occur.
      */
-    public static void makeAndShowText(Activity activity, CharSequence text, int duration,
+    public static void makeAndShowText(AppCompatActivity activity, CharSequence text, int duration,
                                        @StringRes int actionStringResId,
                                        View.OnClickListener actionListener, Snackbar.Callback callback) {
         if (mSnackbar != null) {

@@ -24,7 +24,6 @@ import android.app.Dialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -39,6 +38,8 @@ import com.gelakinetic.mtgfam.helpers.database.FamiliarDbException;
 import com.gelakinetic.mtgfam.helpers.database.FamiliarDbHandle;
 
 import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.Nullable;
 
 /**
  * Class that creates dialogs for RulesFragment
@@ -88,7 +89,7 @@ public class RulesDialogFragment extends FamiliarDialogFragment {
         switch (DIALOG_SEARCH) {
             case DIALOG_SEARCH: {
                 /* Inflate a view to type in the player's name, and show it in an AlertDialog */
-                @SuppressLint("InflateParams") View textEntryView = getActivity().getLayoutInflater().inflate(R.layout.alert_dialog_text_entry,
+                @SuppressLint("InflateParams") View textEntryView = getFamiliarActivity().getLayoutInflater().inflate(R.layout.alert_dialog_text_entry,
                         null, false);
                 assert textEntryView != null;
                 final EditText nameInput = textEntryView.findViewById(R.id.text_entry);
@@ -100,18 +101,18 @@ public class RulesDialogFragment extends FamiliarDialogFragment {
                 } else {
                     FamiliarDbHandle handle = new FamiliarDbHandle();
                     try {
-                        SQLiteDatabase database = DatabaseManager.openDatabase(getActivity(), false, handle);
+                        SQLiteDatabase database = DatabaseManager.openDatabase(getFamiliarActivity(), false, handle);
                         title = String.format(getString(R.string.rules_search_cat),
                                 CardDbAdapter.getCategoryName(getParentRulesFragment().mCategory, getParentRulesFragment().mSubcategory, database));
                     } catch (SQLiteException | FamiliarDbException e) {
                         title = String.format(getString(R.string.rules_search_cat),
                                 getString(R.string.rules_this_cat));
                     } finally {
-                        DatabaseManager.closeDatabase(getActivity(), handle);
+                        DatabaseManager.closeDatabase(getFamiliarActivity(), handle);
                     }
                 }
 
-                Dialog dialog = new MaterialDialog.Builder(getActivity())
+                Dialog dialog = new MaterialDialog.Builder(getFamiliarActivity())
                         .title(title)
                         .customView(textEntryView, false)
                         .positiveText(R.string.dialog_ok)
@@ -122,7 +123,7 @@ public class RulesDialogFragment extends FamiliarDialogFragment {
                             }
                             String keyword = nameInput.getText().toString();
                             if (keyword.length() < 3) {
-                                SnackbarWrapper.makeAndShowText(getActivity(),
+                                SnackbarWrapper.makeAndShowText(getFamiliarActivity(),
                                         R.string.rules_short_key_toast, SnackbarWrapper.LENGTH_LONG);
                             } else {
                                 searchArgs = new Bundle();

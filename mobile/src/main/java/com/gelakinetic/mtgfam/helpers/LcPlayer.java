@@ -22,8 +22,6 @@ package com.gelakinetic.mtgfam.helpers;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +41,9 @@ import com.gelakinetic.mtgfam.fragments.dialogs.LcPlayerDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 public class LcPlayer {
     /* Handler for committing life changes */

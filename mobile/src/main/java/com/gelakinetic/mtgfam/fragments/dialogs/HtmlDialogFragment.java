@@ -22,7 +22,6 @@ package com.gelakinetic.mtgfam.fragments.dialogs;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -35,6 +34,8 @@ import com.gelakinetic.mtgfam.fragments.JudgesCornerFragment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+
+import androidx.annotation.Nullable;
 
 public class HtmlDialogFragment extends FamiliarDialogFragment {
 

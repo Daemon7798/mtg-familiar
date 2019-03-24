@@ -21,8 +21,6 @@ package com.gelakinetic.mtgfam.fragments;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,6 +36,9 @@ import com.gelakinetic.mtgfam.R;
 import com.gelakinetic.mtgfam.helpers.NumberButtonOnClickListener;
 
 import java.util.Random;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 /**
  * This fragment lets a user touch die and get a random result

@@ -23,10 +23,6 @@ import android.app.SearchManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -42,6 +38,11 @@ import com.gelakinetic.mtgfam.helpers.database.CardSearchProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.RejectedExecutionException;
+
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 /**
  * This cursor adapter provides suggestions for card names directly from the database

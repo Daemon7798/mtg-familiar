@@ -21,7 +21,6 @@ package com.gelakinetic.mtgfam.fragments.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gelakinetic.mtgfam.R;
@@ -35,6 +34,8 @@ import com.gelakinetic.mtgfam.helpers.gatherings.GatheringsPlayerData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+
+import androidx.annotation.Nullable;
 
 /**
  * Class that creates dialogs for LifeCounterFragment
@@ -70,7 +71,7 @@ public class LifeCounterDialogFragment extends FamiliarDialogFragment {
         /* This will be set to false if we are returning a null dialog. It prevents a crash */
         setShowsDialog(true);
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity());
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getFamiliarActivity());
         mDialogId = getArguments().getInt(ID_KEY);
 
         if (null == getParentLifeCounterFragment()) {
@@ -165,19 +166,19 @@ public class LifeCounterDialogFragment extends FamiliarDialogFragment {
             }
             case DIALOG_SET_GATHERING: {
                 /* If there aren't any dialogs, don't show the dialog. Pop a toast instead */
-                if (GatheringsIO.getNumberOfGatherings(getActivity().getFilesDir()) <= 0) {
-                    SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.gathering_toast_no_gatherings,
+                if (GatheringsIO.getNumberOfGatherings(getFamiliarActivity().getFilesDir()) <= 0) {
+                    SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.gathering_toast_no_gatherings,
                             SnackbarWrapper.LENGTH_LONG);
                     return DontShowDialog();
                 }
 
                 /* Get a list of Gatherings, and their names extracted from XML */
                 final ArrayList<String> gatherings = GatheringsIO
-                        .getGatheringFileList(getActivity().getFilesDir());
+                        .getGatheringFileList(getFamiliarActivity().getFilesDir());
                 final String[] properNames = new String[gatherings.size()];
                 for (int idx = 0; idx < gatherings.size(); idx++) {
                     properNames[idx] = GatheringsIO
-                            .ReadGatheringNameFromXML(gatherings.get(idx), getActivity().getFilesDir());
+                            .ReadGatheringNameFromXML(gatherings.get(idx), getFamiliarActivity().getFilesDir());
                 }
 
                 /* Set the AlertDialog title, items */
@@ -187,7 +188,7 @@ public class LifeCounterDialogFragment extends FamiliarDialogFragment {
                             /* Read the gathering from XML, clear and set all the info! changeDisplayMode() adds
                                the player Views */
                             Gathering gathering = GatheringsIO
-                                    .ReadGatheringXML(gatherings.get(position), getActivity().getFilesDir());
+                                    .ReadGatheringXML(gatherings.get(position), getFamiliarActivity().getFilesDir());
 
                             getParentLifeCounterFragment().mDisplayMode = gathering.mDisplayMode;
 

@@ -23,12 +23,6 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +33,14 @@ import android.view.ViewGroup;
 import com.gelakinetic.mtgfam.FamiliarActivity;
 import com.gelakinetic.mtgfam.R;
 import com.gelakinetic.mtgfam.helpers.SnackbarWrapper;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 /**
  * This is the superclass for all fragments. It has a bunch of convenient methods
@@ -154,12 +156,12 @@ public abstract class FamiliarFragment extends Fragment {
 
         if (getActivity() != null) {
             if (canInterceptSearchKey()) {
-                menu.add(R.string.search_search)
+                MenuItemCompat.setShowAsAction(menu.add(R.string.search_search)
                         .setIcon(R.drawable.ic_menu_search)
                         .setOnMenuItemClickListener(item -> {
                             onInterceptSearchKey();
                             return true;
-                        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                        }), MenuItem.SHOW_AS_ACTION_IF_ROOM);
             } else {
 
                 SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -182,8 +184,8 @@ public abstract class FamiliarFragment extends Fragment {
 
                     MenuItem mi = menu.add(R.string.name_search_hint)
                             .setIcon(R.drawable.ic_menu_search);
-                    mi.setActionView(sv);
-                    mi.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                    MenuItemCompat.setActionView(mi, sv);
+                    MenuItemCompat.setOnActionExpandListener(mi, new MenuItemCompat.OnActionExpandListener() {
                         @Override
                         public boolean onMenuItemActionExpand(MenuItem item) {
                             mIsSearchViewOpen = true;
@@ -200,7 +202,7 @@ public abstract class FamiliarFragment extends Fragment {
                             return true;
                         }
                     });
-                    mi.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+                    MenuItemCompat.setShowAsAction(mi, MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
                 } catch (RuntimeException e) {
                     /* One user threw this once. I think the typed ComponentName fixes it, but just in case */
@@ -272,9 +274,9 @@ public abstract class FamiliarFragment extends Fragment {
      */
     public void handleFamiliarDbException(boolean shouldFinish) {
         /* Show a toast on the UI thread */
-        FragmentActivity activity = getActivity();
+        AppCompatActivity activity = getFamiliarActivity();
         if (null != activity) {
-            activity.runOnUiThread(() -> SnackbarWrapper.makeAndShowText(getActivity(), R.string.error_database, SnackbarWrapper.LENGTH_LONG));
+            activity.runOnUiThread(() -> SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.error_database, SnackbarWrapper.LENGTH_LONG));
             /* Finish the fragment if requested */
             if (shouldFinish) {
                 try {

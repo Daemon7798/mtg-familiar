@@ -26,8 +26,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -55,6 +53,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 public class LifeCounterFragment extends FamiliarFragment implements TextToSpeech.OnInitListener,
         AudioManager.OnAudioFocusChangeListener, TextToSpeech.OnUtteranceCompletedListener {

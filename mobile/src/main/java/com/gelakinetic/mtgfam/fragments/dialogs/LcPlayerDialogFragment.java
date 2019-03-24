@@ -22,7 +22,6 @@ package com.gelakinetic.mtgfam.fragments.dialogs;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,8 @@ import com.gelakinetic.mtgfam.fragments.LifeCounterFragment;
 import com.gelakinetic.mtgfam.helpers.LcPlayer;
 
 import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.Nullable;
 
 /**
  * Class that creates dialogs for LcPlayer

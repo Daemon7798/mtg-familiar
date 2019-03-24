@@ -23,8 +23,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -59,6 +57,9 @@ import com.gelakinetic.mtgfam.helpers.tcgp.MarketPriceInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 /**
  * This class displays a wishlist of cards, details about the cards, their prices, and the sum of their prices
@@ -117,7 +118,7 @@ public class WishlistFragment extends FamiliarListFragment {
         /* unsort, then save the wishlist */
         sortWishlist(SortOrderDialogFragment.KEY_ORDER + " " + SortOrderDialogFragment.SQL_ASC);
         synchronized (mCompressedWishlist) {
-            WishlistHelpers.WriteCompressedWishlist(getActivity(), mCompressedWishlist);
+            WishlistHelpers.WriteCompressedWishlist(getFamiliarActivity(), mCompressedWishlist);
         }
     }
 
@@ -148,7 +149,7 @@ public class WishlistFragment extends FamiliarListFragment {
         }
 
         try {
-            MtgCard card = new MtgCard(getActivity(), name, null, checkboxFoilIsChecked(), Integer.parseInt(numberOf));
+            MtgCard card = new MtgCard(getFamiliarActivity(), name, null, checkboxFoilIsChecked(), Integer.parseInt(numberOf));
             CompressedWishlistInfo wrapped = new CompressedWishlistInfo(card, 0);
 
             /* Add it to the wishlist, either as a new CompressedWishlistInfo, or to an existing one */
@@ -219,7 +220,7 @@ public class WishlistFragment extends FamiliarListFragment {
         synchronized (mCompressedWishlist) {
             try {
                 /* Read the wishlist */
-                ArrayList<MtgCard> wishlist = WishlistHelpers.ReadWishlist(getActivity(), true);
+                ArrayList<MtgCard> wishlist = WishlistHelpers.ReadWishlist(getFamiliarActivity(), true);
 
                 /* Clear the wishlist, or just the card that changed */
                 if (changedCardName == null) {
@@ -313,7 +314,7 @@ public class WishlistFragment extends FamiliarListFragment {
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, R.string.wishlist_share_title);
                 synchronized (mCompressedWishlist) {
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, WishlistHelpers.GetSharableWishlist(mCompressedWishlist, getActivity(),
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, WishlistHelpers.GetSharableWishlist(mCompressedWishlist, getFamiliarActivity(),
                             mShowCardInfo, mShowIndividualPrices, getPriceSetting()));
                 }
                 sendIntent.setType("text/plain");
@@ -321,7 +322,7 @@ public class WishlistFragment extends FamiliarListFragment {
                 try {
                     startActivity(Intent.createChooser(sendIntent, getString(R.string.wishlist_share)));
                 } catch (android.content.ActivityNotFoundException ex) {
-                    SnackbarWrapper.makeAndShowText(getActivity(), R.string.error_no_email_client, SnackbarWrapper.LENGTH_SHORT);
+                    SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.error_no_email_client, SnackbarWrapper.LENGTH_SHORT);
                 }
                 return true;
             default:
@@ -502,7 +503,7 @@ public class WishlistFragment extends FamiliarListFragment {
             // Make sure the wishlist is written first in the proper order
             sortWishlist(SortOrderDialogFragment.KEY_ORDER + " " + SortOrderDialogFragment.SQL_ASC);
             synchronized (mCompressedWishlist) {
-                WishlistHelpers.WriteCompressedWishlist(getActivity(), mCompressedWishlist);
+                WishlistHelpers.WriteCompressedWishlist(getFamiliarActivity(), mCompressedWishlist);
             }
             sortWishlist(PreferenceAdapter.getWishlistSortOrder(getContext()));
 
@@ -542,7 +543,7 @@ public class WishlistFragment extends FamiliarListFragment {
             // Unsort, save, then sort the wishlist
             sortWishlist(SortOrderDialogFragment.KEY_ORDER + " " + SortOrderDialogFragment.SQL_ASC);
             synchronized (mCompressedWishlist) {
-                WishlistHelpers.WriteCompressedWishlist(getActivity(), mCompressedWishlist);
+                WishlistHelpers.WriteCompressedWishlist(getFamiliarActivity(), mCompressedWishlist);
             }
             sortWishlist(PreferenceAdapter.getWishlistSortOrder(getContext()));
         }
@@ -566,7 +567,7 @@ public class WishlistFragment extends FamiliarListFragment {
             /* Show or hide full card information */
             holder.itemView.findViewById(R.id.cardset).setVisibility(View.GONE);
             if (mShowCardInfo) {
-                Html.ImageGetter imgGetter = ImageGetterHelper.GlyphGetter(getActivity());
+                Html.ImageGetter imgGetter = ImageGetterHelper.GlyphGetter(getFamiliarActivity());
                 /* make sure everything is showing */
                 holder.mCardCost.setVisibility(View.VISIBLE);
                 holder.mCardType.setVisibility(View.VISIBLE);
@@ -624,7 +625,7 @@ public class WishlistFragment extends FamiliarListFragment {
             /* List all the sets and wishlist values for this card */
             for (IndividualSetInfo isi : info.mInfo) {
                 /* inflate a new row */
-                View setRow = getActivity().getLayoutInflater().inflate(R.layout.wishlist_cardset_row, (ViewGroup) holder.itemView.getParent(), false);
+                View setRow = getFamiliarActivity().getLayoutInflater().inflate(R.layout.wishlist_cardset_row, (ViewGroup) holder.itemView.getParent(), false);
                 assert setRow != null;
                 /* Write the set name, color it with the rarity */
                 int color;

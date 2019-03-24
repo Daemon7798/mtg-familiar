@@ -21,8 +21,6 @@ package com.gelakinetic.mtgfam.fragments.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.StackingBehavior;
@@ -36,6 +34,9 @@ import com.gelakinetic.mtgfam.helpers.WishlistHelpers;
 import com.gelakinetic.mtgfam.helpers.database.FamiliarDbException;
 
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Class that creates dialogs for ResultListFragment
@@ -68,11 +69,11 @@ public class ResultListDialogFragment extends FamiliarDialogFragment {
             case QUICK_ADD: {
                 final String cardName = getArguments().getString(NAME_KEY);
                 final String cardSet = getArguments().getString(NAME_SET);
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .stackingBehavior(StackingBehavior.ALWAYS)
                         .title(cardName)
                         .positiveText(R.string.result_list_Add_to_wishlist)
-                        .onPositive((dialog, which) -> WishlistHelpers.addItemToWishlist(getActivity(),
+                        .onPositive((dialog, which) -> WishlistHelpers.addItemToWishlist(getFamiliarActivity(),
                                 new WishlistHelpers.CompressedWishlistInfo(
                                         new MtgCard(cardName, cardSet, false, 1, false), 0)))
                         .negativeText(R.string.result_list_Add_to_decklist)
@@ -91,12 +92,12 @@ public class ResultListDialogFragment extends FamiliarDialogFragment {
 
                 /* If there are no files, don't show the dialog */
                 if (deckNames.length == 0) {
-                    SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.decklist_toast_no_decks,
+                    SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.decklist_toast_no_decks,
                             SnackbarWrapper.LENGTH_LONG);
                     return DontShowDialog();
                 }
 
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .title(R.string.decklist_select_dialog_title)
                         .negativeText(R.string.dialog_cancel)
                         .items((CharSequence[]) deckNames)
@@ -106,7 +107,7 @@ public class ResultListDialogFragment extends FamiliarDialogFragment {
                                 // Read the decklist
                                 String deckFileName = deckNames[position] + DecklistFragment.DECK_EXTENSION;
                                 ArrayList<MtgCard> decklist =
-                                        DecklistHelpers.ReadDecklist(getActivity(), deckFileName, false);
+                                        DecklistHelpers.ReadDecklist(getFamiliarActivity(), deckFileName, false);
 
                                 // Look through the decklist for any existing matches
                                 boolean entryIncremented = false;
@@ -126,7 +127,7 @@ public class ResultListDialogFragment extends FamiliarDialogFragment {
                                 }
 
                                 // Write the decklist back
-                                DecklistHelpers.WriteDecklist(getActivity(), decklist, deckFileName);
+                                DecklistHelpers.WriteDecklist(getFamiliarActivity(), decklist, deckFileName);
                             } catch (FamiliarDbException e) {
                                 getParentResultListFragment().handleFamiliarDbException(false);
                             }

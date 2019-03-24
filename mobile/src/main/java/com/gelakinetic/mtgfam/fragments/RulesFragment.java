@@ -27,8 +27,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
@@ -59,6 +57,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 public class RulesFragment extends FamiliarFragment {
 
@@ -166,7 +167,7 @@ public class RulesFragment extends FamiliarFragment {
         FamiliarDbHandle handle = new FamiliarDbHandle();
         try {
             /* Open a database connection */
-            SQLiteDatabase database = DatabaseManager.openDatabase(getActivity(), false, handle);
+            SQLiteDatabase database = DatabaseManager.openDatabase(getFamiliarActivity(), false, handle);
 
             if (isGlossary) {
                 cursor = CardDbAdapter.getGlossaryTerms(database);
@@ -197,7 +198,7 @@ public class RulesFragment extends FamiliarFragment {
                 }
                 if (cursor.getCount() == 0) { // Adapter will not be set when cursor has count 0
                     int listItemResource = R.layout.rules_list_detail_item;
-                    RulesListAdapter adapter = new RulesListAdapter(getActivity(), listItemResource, mRules);
+                    RulesListAdapter adapter = new RulesListAdapter(getFamiliarActivity(), listItemResource, mRules);
                     list.setAdapter(adapter);
                 }
             }
@@ -238,7 +239,7 @@ public class RulesFragment extends FamiliarFragment {
                     if (isGlossary || isBanned || mSubcategory >= 0 || keyword != null) {
                         listItemResource = R.layout.rules_list_detail_item;
                     }
-                    RulesListAdapter adapter = new RulesListAdapter(getActivity(), listItemResource, mRules);
+                    RulesListAdapter adapter = new RulesListAdapter(getFamiliarActivity(), listItemResource, mRules);
                     list.setAdapter(adapter);
 
                     if (isClickable) {
@@ -266,14 +267,14 @@ public class RulesFragment extends FamiliarFragment {
                         if (item instanceof RuleItem) {
                             // Gets a handle to the clipboard service.
                             ClipboardManager clipboard = (ClipboardManager)
-                                    getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                                    getFamiliarActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             if (null != clipboard) {
                                 // Creates a new text clip to put on the clipboard
                                 ClipData clip = ClipData.newPlainText(getString(R.string.rules_copy_tag), item.getHeader() + ": " + item.getText());
                                 // Set the clipboard's primary clip.
                                 clipboard.setPrimaryClip(clip);
                                 // Alert the user
-                                SnackbarWrapper.makeAndShowText(getActivity(), R.string.rules_coppied, SnackbarWrapper.LENGTH_SHORT);
+                                SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.rules_coppied, SnackbarWrapper.LENGTH_SHORT);
                             }
                         }
                         return true;
@@ -281,13 +282,13 @@ public class RulesFragment extends FamiliarFragment {
                 } else {
                     /* Cursor had a size of 0, boring */
                     if (!isBanned) {
-                        SnackbarWrapper.makeAndShowText(getActivity(), R.string.rules_no_results_toast, SnackbarWrapper.LENGTH_SHORT);
+                        SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.rules_no_results_toast, SnackbarWrapper.LENGTH_SHORT);
                         getFragmentManager().popBackStack();
                     }
                 }
             } else {
                 if (!isBanned) { /* Cursor is null. weird. */
-                    SnackbarWrapper.makeAndShowText(getActivity(), R.string.rules_no_results_toast, SnackbarWrapper.LENGTH_SHORT);
+                    SnackbarWrapper.makeAndShowText(getFamiliarActivity(), R.string.rules_no_results_toast, SnackbarWrapper.LENGTH_SHORT);
                     getFragmentManager().popBackStack();
                 }
             }
@@ -302,7 +303,7 @@ public class RulesFragment extends FamiliarFragment {
             if (setsCursor != null) {
                 setsCursor.close();
             }
-            DatabaseManager.closeDatabase(getActivity(), handle);
+            DatabaseManager.closeDatabase(getFamiliarActivity(), handle);
         }
 
         list.setSelection(position);
@@ -417,7 +418,7 @@ public class RulesFragment extends FamiliarFragment {
         encodedInput = encodedInput.replace("{", "").replace("}", "");
 
         CharSequence cs = ImageGetterHelper
-                .formatStringWithGlyphs(encodedInput, ImageGetterHelper.GlyphGetter(getActivity()));
+                .formatStringWithGlyphs(encodedInput, ImageGetterHelper.GlyphGetter(getFamiliarActivity()));
         SpannableString result = new SpannableString(cs);
 
         if (shouldLink) {
@@ -425,7 +426,7 @@ public class RulesFragment extends FamiliarFragment {
             while (m.find()) {
                 FamiliarDbHandle handle = new FamiliarDbHandle();
                 try {
-                    SQLiteDatabase database = DatabaseManager.openDatabase(getActivity(), false, handle);
+                    SQLiteDatabase database = DatabaseManager.openDatabase(getFamiliarActivity(), false, handle);
                     String[] tokens = cs.subSequence(m.start(), m.end()).toString().split("(\\.)");
                     int firstInt = Integer.parseInt(tokens[0]);
                     final int linkCat = firstInt / 100;
@@ -455,7 +456,7 @@ public class RulesFragment extends FamiliarFragment {
                 } catch (Exception e) {
                     /* Eat any exceptions; they'll just cause the link to not appear*/
                 } finally {
-                    DatabaseManager.closeDatabase(getActivity(), handle);
+                    DatabaseManager.closeDatabase(getFamiliarActivity(), handle);
                 }
             }
         }
@@ -758,7 +759,7 @@ public class RulesFragment extends FamiliarFragment {
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             View v = convertView;
             if (v == null) {
-                LayoutInflater inf = getActivity().getLayoutInflater();
+                LayoutInflater inf = getFamiliarActivity().getLayoutInflater();
                 v = inf.inflate(mLayoutResourceId, parent, false);
             }
             assert v != null;

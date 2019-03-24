@@ -20,13 +20,10 @@
 package com.gelakinetic.mtgfam.helpers;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
 import com.gelakinetic.mtgfam.FamiliarActivity;
 import com.gelakinetic.mtgfam.R;
@@ -47,6 +44,10 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 public class ZipUtils {
 
     private static final String BACKUP_FILE_NAME = "MTGFamiliarBackup.zip";
@@ -57,7 +58,7 @@ public class ZipUtils {
      *
      * @param activity The application activity, for getting files and the like
      */
-    public static void exportData(Activity activity) {
+    public static void exportData(AppCompatActivity activity) {
 
         /* Make sure external storage exists */
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -109,7 +110,7 @@ public class ZipUtils {
      *
      * @param activity The application activity, for getting files and the like
      */
-    public static void importData(Activity activity) {
+    public static void importData(AppCompatActivity activity) {
 
         /* Make sure external storage exists */
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {

@@ -22,7 +22,6 @@ package com.gelakinetic.mtgfam.fragments.dialogs;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -41,6 +40,8 @@ import com.gelakinetic.mtgfam.helpers.tcgp.MarketPriceInfo;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+
+import androidx.annotation.Nullable;
 
 /**
  * Class that creates dialogs for DecklistFragment.
@@ -107,12 +108,12 @@ public class DecklistDialogFragment extends FamiliarDialogFragment {
             }
             case DIALOG_NEW_DECK: {
                 /* Inflate a view to type in the deck's name and show it in an AlertDialog */
-                @SuppressLint("InflateParams") View textEntryView = getActivity().getLayoutInflater()
+                @SuppressLint("InflateParams") View textEntryView = getFamiliarActivity().getLayoutInflater()
                         .inflate(R.layout.alert_dialog_text_entry, null, false);
                 assert textEntryView != null;
                 final EditText nameInput = textEntryView.findViewById(R.id.text_entry);
                 textEntryView.findViewById(R.id.clear_button).setVisibility(View.GONE);
-                Dialog dialog = new MaterialDialog.Builder(getActivity())
+                Dialog dialog = new MaterialDialog.Builder(getFamiliarActivity())
                         .title(R.string.decklist_new)
                         .customView(textEntryView, false)
                         .positiveText(R.string.dialog_ok)
@@ -145,7 +146,7 @@ public class DecklistDialogFragment extends FamiliarDialogFragment {
             }
             case DIALOG_SAVE_DECK_AS: {
                 /* Inflate a view to type in the deck's name and show it in an AlertDialog */
-                @SuppressLint("InflateParams") View textEntryView = getActivity().getLayoutInflater()
+                @SuppressLint("InflateParams") View textEntryView = getFamiliarActivity().getLayoutInflater()
                         .inflate(R.layout.alert_dialog_text_entry, null, false);
                 assert textEntryView != null;
                 final EditText nameInput = textEntryView.findViewById(R.id.text_entry);
@@ -153,7 +154,7 @@ public class DecklistDialogFragment extends FamiliarDialogFragment {
                 /* Set the button to clear the text field */
                 textEntryView.findViewById(R.id.clear_button).setOnClickListener(
                         v -> nameInput.setText(""));
-                Dialog dialog = new MaterialDialog.Builder(getActivity())
+                Dialog dialog = new MaterialDialog.Builder(getFamiliarActivity())
                         .title(R.string.decklist_save)
                         .customView(textEntryView, false)
                         .positiveText(R.string.dialog_ok)
@@ -185,12 +186,12 @@ public class DecklistDialogFragment extends FamiliarDialogFragment {
 
                 /* If there are no files, don't show the dialog */
                 if (deckNames.length == 0) {
-                    SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.decklist_toast_no_decks,
+                    SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.decklist_toast_no_decks,
                             SnackbarWrapper.LENGTH_LONG);
                     return DontShowDialog();
                 }
 
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .title(R.string.decklist_select_dialog_title)
                         .negativeText(R.string.dialog_cancel)
                         .items((CharSequence[]) deckNames)
@@ -199,7 +200,7 @@ public class DecklistDialogFragment extends FamiliarDialogFragment {
                             /* First save the current deck */
                             synchronized (getParentDecklistFragment().mCompressedDecklist) {
                                 DecklistHelpers.WriteCompressedDecklist(
-                                        getActivity(),
+                                        getFamiliarActivity(),
                                         getParentDecklistFragment().mCompressedDecklist,
                                         getParentDecklistFragment().mCurrentDeck + DecklistFragment.DECK_EXTENSION
                                 );
@@ -221,24 +222,24 @@ public class DecklistDialogFragment extends FamiliarDialogFragment {
                 /* if there are no files, don't show the dialog */
                 if (deckNames.length == 0) {
                     SnackbarWrapper.makeAndShowText(
-                            this.getActivity(),
+                            this.getFamiliarActivity(),
                             R.string.decklist_toast_no_decks,
                             SnackbarWrapper.LENGTH_LONG
                     );
                     return DontShowDialog();
                 }
 
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .title(R.string.decklist_delete_dialog_title)
                         .negativeText(R.string.dialog_cancel)
                         .items((CharSequence[]) deckNames)
                         .itemsCallback((dialog, itemView, position, text) -> {
 
-                            File toDelete = new File(getActivity().getFilesDir(),
+                            File toDelete = new File(getFamiliarActivity().getFilesDir(),
                                     deckNames[position] + DecklistFragment.DECK_EXTENSION);
                             if (!toDelete.delete()) {
                                 SnackbarWrapper.makeAndShowText(
-                                        getActivity(),
+                                        getFamiliarActivity(),
                                         toDelete.getName() + " "
                                                 + getString(R.string.not_deleted),
                                         SnackbarWrapper.LENGTH_LONG
@@ -253,7 +254,7 @@ public class DecklistDialogFragment extends FamiliarDialogFragment {
                         .build();
             }
             case DIALOG_CONFIRMATION: {
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .title(R.string.decklist_clear)
                         .content(R.string.decklist_clear_dialog_text)
                         .positiveText(R.string.dialog_ok)
@@ -271,17 +272,17 @@ public class DecklistDialogFragment extends FamiliarDialogFragment {
                 }
 
                 SimpleAdapter adapter = new SimpleAdapter(
-                        getActivity(), getParentDecklistFragment().legalityMap, R.layout.card_view_legal_row,
+                        getFamiliarActivity(), getParentDecklistFragment().legalityMap, R.layout.card_view_legal_row,
                         DecklistFragment.LEGALITY_DIAOG_FROM, DecklistFragment.LEGALITY_DIALOG_TO);
-                ListView lv = new ListView(getActivity());
+                ListView lv = new ListView(getFamiliarActivity());
                 lv.setAdapter(adapter);
-                return new MaterialDialog.Builder(getActivity())
+                return new MaterialDialog.Builder(getFamiliarActivity())
                         .customView(lv, false)
                         .title(R.string.decklist_legality)
                         .build();
             }
             case DIALOG_PRICE_SETTING: {
-                return new MaterialDialog.Builder(this.getActivity())
+                return new MaterialDialog.Builder(this.getFamiliarActivity())
                         .title(R.string.pref_trade_price_title)
                         .items(getResources().getStringArray(R.array.trade_option_entries))
                         .itemsCallbackSingleChoice(getParentDecklistFragment().getPriceSetting().ordinal(), (dialog, itemView, which, text) -> {

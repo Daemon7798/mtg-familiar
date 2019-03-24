@@ -19,7 +19,6 @@
 
 package com.gelakinetic.mtgfam.helpers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Pair;
 
@@ -36,6 +35,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * This class has helpers for reading, writing, and modifying the decklist from different fragments.
  */
@@ -49,7 +50,7 @@ public class DecklistHelpers {
      * @param fileName  The name of the file to write the decklist to
      */
     public static void WriteDecklist(
-            Activity activity,
+            AppCompatActivity activity,
             ArrayList<MtgCard> lDecklist,
             String fileName) {
 
@@ -79,7 +80,7 @@ public class DecklistHelpers {
      * @param fileName            the filename for the decklist
      */
     public static void WriteCompressedDecklist(
-            Activity activity,
+            AppCompatActivity activity,
             ArrayList<CompressedDecklistInfo> mCompressedDecklist,
             String fileName) {
 
@@ -120,7 +121,7 @@ public class DecklistHelpers {
      * @param loadFullData true to load all card data from the database, false to to just read the file
      * @return The decklist as an ArrayList of MtgCards
      */
-    public static ArrayList<MtgCard> ReadDecklist(Activity activity, String deckName, boolean loadFullData) throws FamiliarDbException {
+    public static ArrayList<MtgCard> ReadDecklist(AppCompatActivity activity, String deckName, boolean loadFullData) throws FamiliarDbException {
 
         ArrayList<MtgCard> lDecklist = new ArrayList<>();
 

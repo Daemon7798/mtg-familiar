@@ -20,7 +20,6 @@
 package com.gelakinetic.mtgfam;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.SearchManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -47,20 +46,6 @@ import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -121,6 +106,20 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressDrawable;
 
@@ -1337,18 +1336,6 @@ public class FamiliarActivity extends AppCompatActivity {
     }
 
     /**
-     * A friendly reminder to not use the regular FragmentManager, ever.
-     *
-     * @return Return? How about an exception!
-     */
-    @Override
-    @NotNull
-    public android.app.FragmentManager getFragmentManager() {
-        FamiliarActivity.DebugLog(Log.WARN, "Suggestion", "Use .getSupportFragmentManager()");
-        return super.getFragmentManager();
-    }
-
-    /**
      * If TTS couldn't init, show this dialog. It will only display once as to not annoy people.
      */
     public void showTtsDialog() {
@@ -1583,7 +1570,7 @@ public class FamiliarActivity extends AppCompatActivity {
      * @return -1 if there is no network connection, or the type of network, like
      * ConnectivityManager.TYPE_WIFI
      */
-    public static int getNetworkState(Activity activity, boolean shouldShowToast) {
+    public static int getNetworkState(AppCompatActivity activity, boolean shouldShowToast) {
         try {
             ConnectivityManager conMan = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
             if (null == conMan) {

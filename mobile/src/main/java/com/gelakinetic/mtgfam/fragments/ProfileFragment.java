@@ -21,7 +21,6 @@ package com.gelakinetic.mtgfam.fragments;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -36,6 +35,8 @@ import com.gelakinetic.mtgfam.FamiliarActivity;
 import com.gelakinetic.mtgfam.R;
 import com.gelakinetic.mtgfam.fragments.dialogs.ProfileDialogFragment;
 import com.gelakinetic.mtgfam.helpers.PreferenceAdapter;
+
+import androidx.annotation.NonNull;
 
 /**
  * This fragment contains a players profile information such as their DCI number and anything else

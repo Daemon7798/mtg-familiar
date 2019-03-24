@@ -19,11 +19,11 @@
 
 package com.gelakinetic.mtgfam.helpers.model;
 
-import android.support.annotation.NonNull;
-
 import com.gelakinetic.mtgfam.R;
 
 import org.jetbrains.annotations.Contract;
+
+import androidx.annotation.NonNull;
 
 public enum Comparison {
     EMPTY(" ", R.string.NoComparison),

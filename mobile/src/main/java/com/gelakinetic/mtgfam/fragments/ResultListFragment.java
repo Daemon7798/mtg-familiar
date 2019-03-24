@@ -24,7 +24,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,6 +50,8 @@ import com.gelakinetic.mtgfam.helpers.database.FamiliarDbHandle;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import androidx.annotation.NonNull;
 
 /**
  * This fragment displays a list of cards. It can be from a search result, some MoJhoSto basic, or whatever
@@ -145,13 +146,13 @@ public class ResultListFragment extends FamiliarFragment {
 //                        mCursor.getString(mCursor.getColumnIndex(CardDbAdapter.KEY_SET)),
 //                        false, 1, false);
 //
-//                WishlistHelpers.addItemToWishlist(getActivity(),
+//                WishlistHelpers.addItemToWishlist(getFamiliarActivity(),
 //                        new WishlistHelpers.CompressedWishlistInfo(toAdd, 0));
 //
 //                // Read the decklist
 //                String deckFileName = "Slivers" + DecklistFragment.DECK_EXTENSION;
 //                ArrayList<MtgCard> decklist =
-//                        DecklistHelpers.ReadDecklist(getActivity(), deckFileName, false);
+//                        DecklistHelpers.ReadDecklist(getFamiliarActivity(), deckFileName, false);
 //
 //                // Look through the decklist for any existing matches
 //                boolean entryIncremented = false;
@@ -171,7 +172,7 @@ public class ResultListFragment extends FamiliarFragment {
 //                }
 //
 //                // Write the decklist back
-//                DecklistHelpers.WriteDecklist(getActivity(), decklist, deckFileName);
+//                DecklistHelpers.WriteDecklist(getFamiliarActivity(), decklist, deckFileName);
 //
 //            } catch (java.lang.InstantiationException e) {
 //                /* Eat it */
@@ -206,7 +207,7 @@ public class ResultListFragment extends FamiliarFragment {
 
         /* Open up the database, search for stuff */
         try {
-            mDatabase = DatabaseManager.openDatabase(getActivity(), false, mDbHandle);
+            mDatabase = DatabaseManager.openDatabase(getFamiliarActivity(), false, mDbHandle);
             doSearch(this.getArguments(), mDatabase);
         } catch (SQLiteException | FamiliarDbException e) {
             handleFamiliarDbException(true);
@@ -242,18 +243,18 @@ public class ResultListFragment extends FamiliarFragment {
         if (res != null) {
             if (mCursor.getCount() == 1) {
                 /* Jump back past the result list (it wasn't displayed because this card is a singleton) */
-                if (!getActivity().isTaskRoot()) {
-                    getActivity().finish();
+                if (!getFamiliarActivity().isTaskRoot()) {
+                    getFamiliarActivity().finish();
                 } else {
                     getFragmentManager().popBackStack();
                 }
             }
         } else if (this.isAdded()) {
             if (mCursor == null || mCursor.getCount() == 0) {
-                SnackbarWrapper.makeAndShowText(this.getActivity(), R.string.search_toast_no_results, SnackbarWrapper.LENGTH_SHORT
+                SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), R.string.search_toast_no_results, SnackbarWrapper.LENGTH_SHORT
                 );
-                if (!getActivity().isTaskRoot()) {
-                    getActivity().finish();
+                if (!getFamiliarActivity().isTaskRoot()) {
+                    getFamiliarActivity().finish();
                 } else {
                     getFragmentManager().popBackStack();
                 }
@@ -267,7 +268,7 @@ public class ResultListFragment extends FamiliarFragment {
                 }
             } else {
                 if (savedInstanceState == null) {
-                    SnackbarWrapper.makeAndShowText(this.getActivity(), String.format(getResources().getQuantityString(R.plurals.search_toast_results, mCursor.getCount()),
+                    SnackbarWrapper.makeAndShowText(this.getFamiliarActivity(), String.format(getResources().getQuantityString(R.plurals.search_toast_results, mCursor.getCount()),
                             mCursor.getCount()), SnackbarWrapper.LENGTH_LONG);
                 }
             }
@@ -336,7 +337,7 @@ public class ResultListFragment extends FamiliarFragment {
         if (mCursor != null) {
             mCursor.close();
         }
-        DatabaseManager.closeDatabase(getActivity(), mDbHandle);
+        DatabaseManager.closeDatabase(getFamiliarActivity(), mDbHandle);
     }
 
     /**
@@ -383,7 +384,7 @@ public class ResultListFragment extends FamiliarFragment {
                 to[i] = toList.get(i);
             }
 
-            ResultListAdapter rla = new ResultListAdapter(getActivity(), mCursor, from, to);
+            ResultListAdapter rla = new ResultListAdapter(getFamiliarActivity(), mCursor, from, to);
             mListView.setAdapter(rla);
         }
     }
